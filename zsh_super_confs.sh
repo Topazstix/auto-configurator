@@ -34,6 +34,10 @@ fi
 ## Set a few local vars for the script
 username=$SUDO_USER
 
+## Update apt repositories
+echo "Updating apt repositories"
+apt update -y
+
 ## Install zsh, zsh-autosuggestions, zsh-syntax-highlighting
 echo "Installing a few programs required for script:"
 echo "zsh, zsh-autosuggestions, zsh-syntax-highlighting, git, wget"
