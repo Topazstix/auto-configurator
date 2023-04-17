@@ -110,3 +110,5 @@ echo -e "\n\n"
 echo "Successfully configured zsh! Congrats!"
 echo "Log out and back in to your current shell for changes to take effect"
 echo "Alternatively, you make run `zsh` in your current shell to test it out"
+echo "Enjoy!"
+exit 0
