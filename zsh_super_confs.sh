@@ -38,6 +38,8 @@ username=$SUDO_USER
 echo "Updating apt repositories"
 apt update -y
 
+echo -e "\n\n"
+
 ## Install zsh, zsh-autosuggestions, zsh-syntax-highlighting
 echo "Installing a few programs required for script:"
 echo "zsh, zsh-autosuggestions, zsh-syntax-highlighting, git, wget"
