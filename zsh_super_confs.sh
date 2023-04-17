@@ -100,6 +100,13 @@ echo "Changing default user in zshrc confs"
 sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /home/$username/.zshrc
 sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /root/.zshrc
 
+echo -e "\n\n"
+
+## Make cache directories in each user's home folder
+echo "Making cache directories in each user's home folder"
+mkdir -p /home/$username/.cache/oh-my-zsh
+mkdir -p /root/.cache/oh-my-zsh
+
 
 
 ## Change default shell to zsh for root and user
