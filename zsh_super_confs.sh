@@ -43,7 +43,7 @@ echo "Installing a few programs required for script:"
 echo "zsh, zsh-autosuggestions, zsh-syntax-highlighting, git, wget"
 apt install -y git wget zsh zsh-autosuggestions zsh-syntax-highlighting
 
-echo -n "\n\n"
+echo -e "\n\n"
 
 ## Install oh-my-zsh in custom directory
 echo "Downloading oh-my-zsh"
@@ -51,16 +51,16 @@ echo "Please visit their github and read their docs for extra configs!"
 echo "https://github.com/ohmyzsh/ohmyzsh.git"
 git clone https://github.com/ohmyzsh/ohmyzsh.git /usr/share/oh-my-zsh
 
-echo -n "\n\n"
+echo -e "\n\n"
 
 ## Install powerlevel10k theme
 echo "Downloading powerlevel10k theme"
 echo "Please visit their github and read their docs for extra configs!"
 echo "I've disable the github module in p10k, as i use tmux with that same plugin"
 echo "https://github.com/romkatv/powerlevel10k.git"
-git clone https://github.com/romkatv/powerlevel10k.git /usr/share/oh-my-zsh/custom/themes/
+git clone https://github.com/romkatv/powerlevel10k.git /usr/share/oh-my-zsh/custom/themes/powerlevel10k
 
-echo -n "\n\n"
+echo -e "\n\n"
 
 ## Download custom configurations for zsh
 ## Check if current folder contains our github's conf folder, 
@@ -86,7 +86,7 @@ else
 
 fi
 
-echo -n "\n\n"
+echo -e "\n\n"
 
 ## Change permissions on new files
 echo "Changing perms on new files"
@@ -104,7 +104,7 @@ sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /root/.zshrc
 chsh -s $(which zsh) $username
 chsh -s $(which zsh) root
 
-echo -n "\n\n"
+echo -e "\n\n"
 
 ## Advise user to log out and back in to their current shell for changes to take effect
 echo "Successfully configured zsh! Congrats!"
