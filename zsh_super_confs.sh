@@ -115,18 +115,18 @@ echo -e "\n\n"
 ## Otherwise download confs with wget
 if [ -d ./confs ]; then
    echo "Using local conf files"
-   cp ./confs/p10k.root.zsh /root/.p10k.zsh
-   cp ./confs/p10k.user.zsh /home/$username/.p10k.zsh
-   cp ./confs/user.zshrc /home/$username/.zshrc
-   cp ./confs/user.zshrc /root/.zshrc
+   cp ./confs/zsh/p10k.root.zsh /root/.p10k.zsh
+   cp ./confs/zsh/p10k.user.zsh /home/$username/.p10k.zsh
+   cp ./confs/zsh/user.zshrc /home/$username/.zshrc
+   cp ./confs/zsh/user.zshrc /root/.zshrc
    cp ./.p10k.zsh /usr/share/oh-my-zsh/custom/
    
 else
    echo "Downloading conf files from github"
 
-   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/p10k.root.zsh -O /root/.p10k.zsh
-   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/p10k.user.zsh -O /home/$username/.p10k.zsh
-   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/user.zshrc -O /home/$username/.zshrc
+   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/zsh/p10k.root.zsh -O /root/.p10k.zsh
+   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/zsh/p10k.user.zsh -O /home/$username/.p10k.zsh
+   wget https://raw.githubusercontent.com/Topazstix/auto-configurator/main/confs/zsh/user.zshrc -O /home/$username/.zshrc
    sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /home/$username/.zshrc
    cp /home/$username/.zshrc /root/.zshrc
 
@@ -135,24 +135,22 @@ fi
 
 echo -e "\n\n"
 
-## Change permissions on new files
-echo "Changing perms on new files"
-chown -R $username:$username /home/$username/.{zshrc,p10k.zsh}
-chown -R root:root /root/.{zshrc,p10k.zsh}
-
-## Replace default user with $username in new files
-echo "Changing default user in zshrc confs"
-sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /home/$username/.zshrc
-sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /root/.zshrc
-
-echo -e "\n\n"
-
 ## Make cache directories in each user's home folder
 echo "Making cache directories in each user's home folder"
 mkdir -p /home/$username/.cache/oh-my-zsh
 mkdir -p /root/.cache/oh-my-zsh
 
+echo -e "\n\n"
 
+## Change permissions on new files
+echo "Changing perms on new files"
+chown -R $username:$username /home/$username/.{zshrc,p10k.zsh,cache}
+chown -R root:root /root/.{zshrc,p10k.zsh,cache}
+
+## Replace default user with $username in new files
+echo "Changing default user in zshrc confs"
+sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /home/$username/.zshrc
+sed -i "s/DEFAULT_USER=\"\"/DEFAULT_USER=${username}/g" /root/.zshrc
 
 ## Change default shell to zsh for root and user
 usermod --shell $(which zsh) $username
