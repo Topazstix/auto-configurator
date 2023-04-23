@@ -1,0 +1,23 @@
+update_arch() {
+   pacman --noconfirm -Syy
+
+   pacman --noconfirm -S git zsh zsh-autosuggestions zsh-syntax-highlighting
+}
+
+update_debian() {
+   apt update -y
+
+   apt install -y git zsh zsh-autosuggestions zsh-syntax-highlighting
+}
+
+update_fedora() {
+   dnf update -y
+
+   dnf install -y git zsh zsh-autosuggestions zsh-syntax-highlighting
+}
+
+update_centos() {
+    yum update -y
+
+    yum install -y git zsh zsh-autosuggestions zsh-syntax-highlighting
+}

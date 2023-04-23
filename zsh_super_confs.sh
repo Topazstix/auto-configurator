@@ -24,6 +24,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+## DEBUG 
+# set -x
+
+
+source library.lib
+
 ## Check if the user is root, otherwise exit
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
@@ -34,18 +41,56 @@ fi
 ## Set a few local vars for the script
 username=$SUDO_USER
 
-## Update apt repositories
-echo "Updating apt repositories"
-apt update -y
+if [[ -e /etc/os-release ]]; then
+   source /etc/os-release
+   case $ID in
+      arch|endeavouros|manjaro)
+            update_arch
+            ;;
+      debian|ubuntu|kali|linuxmint)
+            update_debian
+            ;;
+      fedora)
+            update_fedora
+            ;;
+      rhel|centos)
+            update_centos
+            ;;
+      *)
+            echo "Unknown distribution"
+            exit 2
+            ;;
+   esac
+else
+   echo "Could not determine OS release information"
+   exit 2
+fi
 
-echo -e "\n\n"
+## Exit script if updates failed
+if [ $? -ne 0 ]; then
+   echo "Updates failed, exiting script"
+   exit 3
+fi
 
-## Install zsh, zsh-autosuggestions, zsh-syntax-highlighting
-echo "Installing a few programs required for script:"
-echo "zsh, zsh-autosuggestions, zsh-syntax-highlighting, git, wget"
-apt install -y git wget zsh zsh-autosuggestions zsh-syntax-highlighting
 
-echo -e "\n\n"
+## Check for existence of dirs
+if [[ ! -n $(find /usr/share -maxdepth 1 -type d -name zsh-autosuggestions -print -quit) && ! -n $(find /usr/share -maxdepth 1 -type d -name zsh-syntax-highlighting -print -quit) ]]; then 
+   echo "Directories are in non-standard location"
+   echo "Symlinking to preferred locations"
+
+   auto_suggestions=$(find /usr/share -type d -name zsh-autosuggestions  | grep -vE '(doc|licenses)')
+   syntax_highlighting=$(find /usr/share -type d -name zsh-syntax-highlighting  | grep -vE '(doc|licenses)')
+
+   ln -s $auto_suggestions /usr/share
+   ln -s $syntax_highlighting /usr/share
+
+   if [ $? -ne 0 ]; then
+      echo "Failed to create symlinks"
+      exit 4
+   fi
+fi
+
+
 
 ## Install oh-my-zsh in custom directory
 echo "Downloading oh-my-zsh"
@@ -110,8 +155,8 @@ mkdir -p /root/.cache/oh-my-zsh
 
 
 ## Change default shell to zsh for root and user
-chsh -s $(which zsh) $username
-chsh -s $(which zsh) root
+usermod --shell $(which zsh) $username
+usermod --shell $(which zsh) root
 
 echo -e "\n\n"
 
